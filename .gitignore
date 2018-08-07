@@ -1,0 +1,7 @@
+.DS_Store
+package-lock.json
+*.log
+.gitdocs_build
+node_modules
+dist
+dist_stories
