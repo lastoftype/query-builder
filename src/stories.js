@@ -37,25 +37,24 @@ storiesOf('QueryBuilder', module).add('Defaults', () => {
 const exampleSchema = [
     {
         label: 'User',
-        path: 'user',
         subfields: [
             {
                 label: 'User ID',
-                path: 'id',
+                path: 'user.id',
                 type: 'string',
                 description: "The user's numerical ID.",
                 placeholder: 'e.g. 123456',
             },
             {
                 label: 'User email',
-                path: 'email',
+                path: 'user.email',
                 type: 'string',
                 description: "The user's email address.",
                 placeholder: 'e.g. john@doe.com',
             },
             {
                 label: 'User name',
-                path: 'name',
+                path: 'user.name',
                 type: 'string',
                 description: "The user's preferred reference name.",
                 placeholder: 'e.g. John',
@@ -64,9 +63,8 @@ const exampleSchema = [
     },
     {
         label: 'Runtime',
-        path: 'runtime',
         message:
-            '*Hey, we noticed you have no runtime context.*\n\nTo get it click below to install the Timber ruby package\n\n[https://github.com/timberio/ruby](https://github.com/timberio/ruby)',
+            '**Hey, we noticed you have no runtime context.**\n\nTo get it click below to install the Timber ruby package\n\n[https://github.com/timberio/ruby](https://github.com/timberio/ruby)',
         subfields: [],
     },
 ];

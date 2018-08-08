@@ -1,7 +1,8 @@
+import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
-import { FlexTable, Row, Cell, Input, Tooltip } from '@timberio/ui';
+import { FlexTable, Row, Cell, Input, Tooltip, Select } from '@timberio/ui';
 
 export default class QueryBuilder extends React.PureComponent {
     static propTypes = {
@@ -9,7 +10,6 @@ export default class QueryBuilder extends React.PureComponent {
             PropTypes.shape({
                 label: PropTypes.string.isRequired,
                 message: PropTypes.string,
-                path: PropTypes.string.isRequired,
                 subfields: PropTypes.arrayOf(
                     PropTypes.shape({
                         description: PropTypes.string,
@@ -25,13 +25,24 @@ export default class QueryBuilder extends React.PureComponent {
     state = {
         activePanelIndex: 0,
         open: true,
+
+        /**
+         * {
+         *   path: {
+         *     modifier?
+         *     value?
+         *   }
+         * }
+         */
+        fieldState: {},
     };
 
     render() {
         return (
             <Container>
-                <Input icon="circle" placeholder="Search" />
-                {this.renderDropdown()}
+                <StyledInput icon="circle" placeholder="Search" />
+                {JSON.stringify(this.state.fieldState)}
+                {this.state.open && this.renderDropdown()}
             </Container>
         );
     }
@@ -64,17 +75,22 @@ export default class QueryBuilder extends React.PureComponent {
     renderDropdownPanel(panel) {
         return (
             <div>
-                {panel.message && <div>{panel.message}</div>}
+                {panel.message && (
+                    <StyledMarkdown>{panel.message}</StyledMarkdown>
+                )}
 
                 <FlexTable>
-                    {panel.subfields.length &&
-                        panel.subfields.map(this.renderPanelField)}
+                    {panel.subfields.length
+                        ? panel.subfields.map(this.renderField)
+                        : null}
                 </FlexTable>
             </div>
         );
     }
 
-    renderPanelField = field => {
+    renderField = field => {
+        const fieldState = this.state.fieldState[field.path];
+
         return (
             <Field key={field.path}>
                 <FieldLabel>
@@ -86,12 +102,53 @@ export default class QueryBuilder extends React.PureComponent {
                         <FieldDescriptionIcon />
                     </FieldTooltip>
                 </FieldLabel>
-                <Cell>placeholder for field type combobox</Cell>
-                <Cell grow={2}>placeholder for field input</Cell>
+                <CellWithOverflow>
+                    {this.renderFieldConfigurator(field)}
+                </CellWithOverflow>
+                <Cell grow={4}>
+                    <StyledInput
+                        inputProps={{
+                            'data-field-path': field.path,
+                        }}
+                        onChange={this.updateFieldValue}
+                        placeholder={field.placeholder}
+                        value={fieldState ? fieldState.value || '' : ''}
+                    />
+                </Cell>
                 <Cell collapse>+</Cell>
             </Field>
         );
     };
+
+    renderFieldConfigurator(field) {
+        switch (field.type) {
+            case 'string':
+                return (
+                    <StyledSelect
+                        data={[
+                            {
+                                value: '',
+                                label: 'contains',
+                                path: field.path,
+                            },
+                            {
+                                value: '!',
+                                label: 'does not contain',
+                                path: field.path,
+                            },
+                        ]}
+                        defaultValue={{
+                            value: '',
+                            label: 'contains',
+                        }}
+                        onChange={this.updateFieldModifier}
+                    />
+                );
+
+            default:
+                return null;
+        }
+    }
 
     setActivePanel = e =>
         this.setState({
@@ -100,6 +157,32 @@ export default class QueryBuilder extends React.PureComponent {
                 10,
             ),
         });
+
+    updateFieldModifier = option => {
+        const { path } = option;
+
+        this.setState({
+            fieldState: {
+                ...this.state.fieldState,
+                [path]: Object.assign({}, this.state.fieldState[path], {
+                    modifier: option.value,
+                }),
+            },
+        });
+    };
+
+    updateFieldValue = e => {
+        const path = e.target.getAttribute('data-field-path');
+
+        this.setState({
+            fieldState: {
+                ...this.state.fieldState,
+                [path]: Object.assign({}, this.state.fieldState[path], {
+                    value: e.target.value,
+                }),
+            },
+        });
+    };
 }
 
 const Container = styled.div`
@@ -109,7 +192,6 @@ const Container = styled.div`
 
 const Dropdown = styled.div`
     max-height: 80vh;
-    overflow: auto;
     padding: 1em;
     position: absolute;
     top: 100%;
@@ -133,6 +215,7 @@ const PanelToggle = styled.button`
     font-size: 1rem;
     font-weight: 700;
     margin: 0 1em;
+    outline: none;
     position: relative;
     padding: 0 0 10px;
 
@@ -169,7 +252,9 @@ const FieldLabel = styled(Cell)`
 `;
 
 const FieldTooltip = styled(Tooltip)`
-    line-height: 0;
+    > * {
+        line-height: 0;
+    }
 `;
 
 const FieldDescriptionIcon = styled.div`
@@ -199,5 +284,35 @@ const FieldDescriptionIcon = styled.div`
         color: white;
         font-size: 0.5em;
         font-weight: 700;
+    }
+`;
+
+const CellWithOverflow = styled(Cell)`
+    overflow: visible;
+    padding-right: 1em;
+`;
+
+const StyledSelect = styled(Select)`
+    width: 100%;
+`;
+
+const StyledInput = styled(Input)`
+    width: 100%;
+
+    input {
+        box-sizing: border-box;
+    }
+`;
+
+const StyledMarkdown = styled(Markdown)`
+    text-align: center;
+
+    a {
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        color: inherit;
+        display: inline-block;
+        padding: 0.5em 1em;
+        text-decoration: none;
     }
 `;
