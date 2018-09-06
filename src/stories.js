@@ -1,12 +1,29 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Theme } from '@timberio/ui'
-import QueryBuilder from './';
+import QueryBuilder from './QueryBuilder';
+import { ThemeProvider } from 'emotion-theming'
+import { injectGlobal } from 'react-emotion'
+
+import theme from './theme'
+
+injectGlobal`
+  body {
+    font-family: ${theme.fonts.primary};
+    font-size: ${theme.sizes.fontSizes[2]};
+    color: ${theme.colors.gray[5]};
+  }
+
+  * {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+`
 
 storiesOf('QueryBuilder', module).add('Defaults', () => {
   return (
-    <Theme>
+    <ThemeProvider theme={theme}>
       <QueryBuilder />
-    </Theme>
+    </ThemeProvider>
   )
 })
