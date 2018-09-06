@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 
 import Label from './Label'
 import Icon from './Icon'
+import Input from './Input'
+import Select from './Select'
 
 const InputGroupWrapper = styled.div`
   width: 100%;
@@ -21,6 +23,10 @@ const InputGroupCol = styled.div`
   margin-right: 15px;
   display: flex;
   align-items: center;
+
+  &:last-child {
+    margin: 0;
+  }
 `
 
 const InputGroup = ({children, handleAddInputGroup, inputTitle, ...props}) => (
@@ -29,12 +35,13 @@ const InputGroup = ({children, handleAddInputGroup, inputTitle, ...props}) => (
       <Label>{inputTitle} <span><Icon icon="question" /></span></Label>
     </InputGroupCol>
     <InputGroupCol flex="0 0 150px">
-      <select style={{width: '100%'}}>
-        <option>asdasd</option>
-      </select>
+      <Select style={{width: '100%'}}>
+        <option>Contains</option>
+        <option>Does not contain</option>
+      </Select>
     </InputGroupCol>
     <InputGroupCol flex="1 1 auto">
-      <input style={{width: '100%'}} type="text" />
+      <Input type="text" placeholder="e.g. 1234567" />
     </InputGroupCol>
     <InputGroupCol flex="0 1 auto">
       <Icon 

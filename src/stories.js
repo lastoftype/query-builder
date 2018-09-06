@@ -17,6 +17,8 @@ injectGlobal`
   * {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    font-smooth: antialiased;
+    -webkit-font-smoothing: antialiased;
   }
 `
 
