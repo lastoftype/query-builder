@@ -59,6 +59,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "babel-runtime": "^6.26.0",
+    "css-loader": "^1.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-config-timber": "^1.0.24",
@@ -66,7 +67,8 @@
     "raw-loader": "^0.5.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "sinon": "^5.1.0"
+    "sinon": "^5.1.0",
+    "style-loader": "^0.23.0"
   },
   "eslintConfig": {
     "extends": "timber"

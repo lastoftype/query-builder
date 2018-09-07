@@ -61,7 +61,7 @@ export default class QueryBuilder extends Component {
       custom: {}
     },
     refs: [],
-    params: {}
+    params: []
   }
 
   constructor(props) {
@@ -93,15 +93,16 @@ export default class QueryBuilder extends Component {
 
   handleChange(inputName, val) {
     this.setState(prevState => ({
-      params: Object.assign({}, prevState.params, {[inputName]: val})
+      params: [...prevState.params, {key: inputName, value: val}]
     }));
+    console.log(this.state.params);
   }
 
   render () {
     return (
       <QueryBuilderWrapper>
         <Card>
-          <LargeInput content={JSON.stringify(this.state.params)} />
+          <LargeInput tags={this.state.params} />
           <TabGroup>
             { 
               tabs.map((tab, i) => (
