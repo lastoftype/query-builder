@@ -17,6 +17,11 @@ const InputWrapper = styled.input`
   &::-webkit-input-placeholder {
     color: #A7AEBB;
   }
+  
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.purple[3]};
+  }
 `
 
 const Input = (props) => (

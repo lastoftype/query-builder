@@ -61,11 +61,17 @@ export default class QueryBuilder extends Component {
           </TabGroup>
           <TabContent>
             <InputGroup 
-                inputTitle="User ID"
-                handleAddInputGroup={this.addInputGroup} />
+              inputTitle="User ID"
+              inputName="userId"
+              handleAddInputGroup={this.addInputGroup} />
             <InputGroup 
-                inputTitle="User email"
-                handleAddInputGroup={this.addInputGroup} />
+              inputTitle="User email"
+              inputName="userEmail"
+              handleAddInputGroup={this.addInputGroup} />
+            <InputGroup 
+              inputTitle="User name"
+              inputName="userName"
+              handleAddInputGroup={this.addInputGroup} />
           </TabContent>
           <ButtonGroup>
             <Button color="default">Cancel</Button>
