@@ -29,19 +29,24 @@ const InputGroupCol = styled.div`
   }
 `
 
-const InputGroup = ({children, handleAddInputGroup, inputTitle, ...props}) => (
+const InputGroup = ({children, handleAddInputGroup, handleSelect, handleChange, inputName, inputTitle, ...props}) => (
   <InputGroupWrapper>
     <InputGroupCol flex="0 1 150px">
       <Label>{inputTitle} <span><Icon icon="question" /></span></Label>
     </InputGroupCol>
     <InputGroupCol flex="0 0 150px">
-      <Select style={{width: '100%'}}>
-        <option>Contains</option>
-        <option>Does not contain</option>
+      <Select 
+        style={{width: '100%'}} 
+        handleChange={(val) => handleChange(val)}>
+        <option value="contains">Contains</option>
+        <option value="doesntcontain">Does not contain</option>
       </Select>
     </InputGroupCol>
     <InputGroupCol flex="1 1 auto">
-      <Input type="text" placeholder="e.g. 1234567" />
+      <Input
+        onChange={(e) => handleChange(e.target.value)}
+        type="text" 
+        placeholder="e.g. 1234567" />
     </InputGroupCol>
     <InputGroupCol flex="0 1 auto">
       <Icon 
@@ -53,7 +58,9 @@ const InputGroup = ({children, handleAddInputGroup, inputTitle, ...props}) => (
 
 InputGroup.propTypes = {
   inputTitle: PropTypes.string.isRequired,
-  handleAddInputGroup: PropTypes.func.isRequired
+  inputName: PropTypes.string.isRequired,
+  handleAddInputGroup: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired
 }
 
 export default InputGroup

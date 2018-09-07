@@ -30,7 +30,7 @@ const LargeInputWrapper = styled.div`
 `
 
 const LargeInput = ({content, handleChange, ...props}) => (
-  <LargeInputWrapper contenteditable="true">
+  <LargeInputWrapper contentEditable="true">
     {content}
   </LargeInputWrapper>
   )

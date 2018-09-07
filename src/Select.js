@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import PropTypes from 'prop-types'
 
 const SelectWrapper = styled.select`
   display: flex;
@@ -17,10 +18,14 @@ const SelectWrapper = styled.select`
   font-family: ${props => props.theme.fonts.primary};
 `
 
-const Select = ({children, props}) => (
-  <SelectWrapper {...props}>
+const Select = ({children, handleChange, props}) => (
+  <SelectWrapper onChange={(e) => handleChange(e.target.value)}>
     {children}
   </SelectWrapper> 
   )
+
+Select.propTypes = {
+  // handleChange: PropTypes.func.isRequired
+}
 
 export default Select
